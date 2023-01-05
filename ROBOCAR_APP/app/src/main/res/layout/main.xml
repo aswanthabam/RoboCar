@@ -1,11 +1,300 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center"
+	android:background="#ffffff">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="10dp"
+			android:orientation="vertical"
+			android:layout_marginBottom="20dp"
+			android:layout_marginTop="20dp"
+			android:background="#DBDBDB"
+			android:padding="10dp">
+
+			<LinearLayout
+				android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:layout_marginBottom="10dp">
+
+				<ImageView
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:src="@drawable/ic_launcher"/>
+
+			</LinearLayout>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="Govt. College Thalassery"
+				android:textSize="15sp"
+				android:textStyle="bold"
+				android:layout_marginBottom="5dp"
+				android:textColor="#000000"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="Dept. Of Computer Science"
+				android:textSize="15sp"
+				android:textStyle="bold"
+				android:layout_marginBottom="6dp"
+				android:textColor="#000000"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:text="Robo Car"
+				android:textSize="25sp"
+				android:textStyle="bold"
+				android:textColor="#37F8FF"
+				android:elevation="100dp"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center">
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="100dp"
+				android:layout_height="match_parent"
+				android:gravity="bottom|center_horizontal">
+
+				<Button
+					android:id="@+id/btn_backward"
+					android:layout_width="80dp"
+					android:layout_height="80dp"
+					android:text=""
+					android:textSize="25sp"
+					android:textStyle="bold"
+					android:background="@drawable/brake_icon"/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Brake"
+					android:layout_marginBottom="10dp"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:layout_weight="1"
+				android:gravity="center">
+
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="top|center_horizontal"
+					android:layout_marginBottom="20dp"
+					android:layout_marginTop="20dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Mode"/>
+
+					<RadioGroup
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal">
+
+						<RadioButton
+							android:id="@+id/radio_obstacle"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:button="@null"
+							android:drawableTop="@android:drawable/btn_radio"
+							android:text="Obstacle"
+							android:gravity="center"
+							android:layout_marginRight="20dp"/>
+
+						<RadioButton
+							android:id="@+id/radio_control"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:button="@null"
+							android:drawableTop="@android:drawable/btn_radio"
+							android:text="Control"
+							android:checked="true"
+							android:gravity="center"/>
+
+					</RadioGroup>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:orientation="horizontal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:layout_weight="1">
+
+					<Button
+						android:id="@+id/btn_right"
+						android:layout_width="80dp"
+						android:layout_height="80dp"
+						android:text="←"
+						android:layout_marginRight="20dp"
+						android:textSize="25sp"
+						android:textStyle="bold"
+						android:background="@drawable/icon_left"/>
+
+					<Button
+						android:layout_width="80dp"
+						android:layout_height="80dp"
+						android:text="→"
+						android:layout_marginLeft="20dp"
+						android:textSize="25sp"
+						android:textStyle="bold"
+						android:background="@drawable/icon_right"
+						android:visibility="invisible"/>
+
+					<Button
+						android:id="@+id/btn_left"
+						android:layout_width="80dp"
+						android:layout_height="80dp"
+						android:text="→"
+						android:layout_marginLeft="20dp"
+						android:textSize="25sp"
+						android:textStyle="bold"
+						android:background="@drawable/icon_right"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:id="@+id/linear_status"
+					android:orientation="horizontal"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:gravity="center_vertical|center_horizontal"
+					android:layout_marginTop="20dp"
+					android:background="#C3C3C3"
+					android:paddingTop="5dp"
+					android:paddingBottom="5dp"
+					android:paddingLeft="20dp"
+					android:paddingRight="20dp">
+
+					<ImageView
+						android:id="@+id/text_statusImg"
+						android:layout_width="15dp"
+						android:layout_height="15dp"
+						android:src="@drawable/circle_img"
+						android:gravity="center_vertical"
+						android:tint="@color/red"/>
+
+					<TextView
+						android:id="@+id/text_status"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Status"
+						android:textStyle="bold"
+						android:textSize="18sp"
+						android:layout_marginLeft="10dp"
+						android:textColor="@color/red"/>
+					
+					<Spinner 
+						android:id="@+id/spinner_selector"
+						android:layout_width="0dp"
+						android:layout_height="0dp"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="100dp"
+				android:layout_height="match_parent"
+				android:gravity="center">
+
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:gravity="top|center_horizontal"
+					android:layout_marginTop="20dp">
+
+					<CheckBox
+						android:id="@+id/btn_voice"
+						android:layout_width="60dp"
+						android:layout_height="60dp"
+						android:gravity="center"
+						android:button="@null"
+						android:background="@drawable/voice"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Voice Control"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:gravity="center">
+
+					<CheckBox
+						android:id="@+id/check_gear"
+						android:layout_width="60dp"
+						android:layout_height="120dp"
+						android:background="@drawable/gear"
+						android:button="@null"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:gravity="bottom|center_horizontal">
+
+					<Button
+						android:id="@+id/btn_forward"
+						android:layout_width="80dp"
+						android:layout_height="80dp"
+						android:text=""
+						android:textSize="25sp"
+						android:textStyle="bold"
+						android:background="@drawable/brake_icon"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Accelerate"
+						android:layout_marginBottom="10dp"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</RelativeLayout>
 
 </LinearLayout>
+

@@ -20,5 +20,8 @@ android {
 }
 
 dependencies {
+	implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation ('android.arch.core:runtime:1.+'){ force = true }
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
