@@ -5,6 +5,7 @@ import android.support.v7.app.*;
 import android.widget.*;
 import android.view.*;
 import java.util.*;
+import java.lang.reflect.*;
 
 public class Bluetooth
 {
@@ -88,4 +89,34 @@ public class Bluetooth
 	public interface OnDeviceDiscoveredListener{
 		void onDiscover(BluetoothDevice device);
 	}
+	
+	public void pairDevice(BluetoothDevice device) {
+        try {
+            Method method = device.getClass().getMethod("createBond", (Class[]) null);
+            method.invoke(device, (Object[]) null);
+			IntentFilter intent = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+			activity.registerReceiver(mPairReceiver, intent);
+        } catch (Exception e) {
+			Toast.makeText(activity,"Unable to pair",2000).show();
+            e.printStackTrace();
+        }
+    }
+	
+	private final BroadcastReceiver mPairReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+				final int state        = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
+				final int prevState    = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
+
+				if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
+					Toast.makeText(activity,"Paired",2000).show();
+				} else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED){
+					Toast.makeText(activity,"Unpaired",2000).show();
+				}
+
+            }
+        }
+    };
 }

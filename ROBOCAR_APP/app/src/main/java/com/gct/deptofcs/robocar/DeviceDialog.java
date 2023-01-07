@@ -5,16 +5,17 @@ import android.support.v7.app.*;
 import android.bluetooth.*;
 import java.util.*;
 import android.widget.*;
+import android.support.v7.widget.*;
 
 public class DeviceDialog extends Dialog
 {
 	private AppCompatActivity activity;
 	private List<BluetoothDevice> devices = new ArrayList<BluetoothDevice>();
 	private List<String> deviceString = new ArrayList<String>();
-	private ArrayAdapter adapter;
-	private ListView listView;
+	private RecyclerView rcView;
 	private Button close,connect;
 	private Bluetooth blue;
+	private DeviceAdapter adapter;
 	DeviceDialog(AppCompatActivity a,Bluetooth b){
 		super(a);
 		activity = a;
@@ -30,21 +31,27 @@ public class DeviceDialog extends Dialog
 		
 		close = findViewById(R.id.device_selectorClose);
 		connect = findViewById(R.id.device_selectorConnect);
-		listView = findViewById(R.id.device_selectorListView);
-		
+		rcView = findViewById(R.id.device_selectorRecyclerView);
+		adapter = new DeviceAdapter(activity,devices);
+		adapter.setOnDeviceSelectedListener(new DeviceAdapter.OnDeviceSelectedListener(){
+			public void onSelected(BluetoothDevice device){
+				blue.pairDevice(device);
+			}
+		});
 		blue.scan();
 		blue.setOnDeviceDiscoverListener(new Bluetooth.OnDeviceDiscoveredListener(){
 			public void onDiscover(BluetoothDevice device){
 				devices.add(device);
 				deviceString.add(device.getName());
-				listView.setAdapter(adapter);
+				adapter.updateData(devices);
+				rcView.setAdapter(adapter);
 			}
 		});
 		
 		//for(BluetoothDevice dt : devices) deviceString.add(dt.getName());
-		adapter = new ArrayAdapter(activity,android.R.layout.simple_list_item_1,deviceString);
+		/*adapter = new ArrayAdapter(activity,android.R.layout.simple_list_item_1,deviceString);
 		
-		listView.setAdapter(adapter);
+		listView.setAdapter(adapter);*/
 	}
 	
 }
