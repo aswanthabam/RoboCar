@@ -123,9 +123,9 @@ void obstacle (){
   if (distance <= 12) {
     // Distance less than 12 Cm
     stop(); 
-    backward();
-    delay(100);
-    stop();
+    /*backward();
+    delay(100);*/
+    //stop();
     L = leftsee();
     servo.write(spoint);
     delay(800);

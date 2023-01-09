@@ -6,14 +6,23 @@ import android.widget.*;
 import android.view.*;
 import java.util.*;
 import java.lang.reflect.*;
+import java.io.*;
+import android.util.*;
 
 public class Bluetooth
 {
+	public static final String UUID_String = "00000000-0000-1000-8000-00805F9B34FB";
 	private BluetoothAdapter ba;
 	private AppCompatActivity activity;
 	private Set<BluetoothDevice> pairedDevices;
+	public List<BluetoothDevice> discoveredDevices = new ArrayList<BluetoothDevice>();
 	public List<String> devices = new ArrayList<String>();
 	private OnDeviceDiscoveredListener listener;
+	private OnStateChangedListener state_listener;
+	private BluetoothSocket socket;
+	public boolean IS_CONNECTED = false;
+	public String CONNECTED_DEVICE = null;
+	
 	Bluetooth(AppCompatActivity a){
 		activity = a;
 		BluetoothManager bluetoothManager = a.getSystemService(BluetoothManager.class);
@@ -25,12 +34,25 @@ public class Bluetooth
 		//ba = BluetoothAdapter.getDefaultAdapter();
 		
 		// Register for broadcasts when a device is discovered.
-		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(BluetoothDevice.ACTION_FOUND);
+		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 		a.registerReceiver(receiver, filter);
 	}
 	public BluetoothAdapter getAdapter(){
 		return ba;
 	}
+	public boolean send(String data){
+		if(!IS_CONNECTED) return false;
+		try{
+			socket.getOutputStream().write(data.getBytes());
+			return true;
+		}catch(IOException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public void on(){
 		if (!ba.isEnabled()) {
 			Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -52,6 +74,7 @@ public class Bluetooth
 	}
 
 	public boolean scan(){
+		if(listener != null) listener.onStart();
 		if(ba.startDiscovery()){
 			Toast.makeText(activity,"Discovering ...",2000).show();
 			return true;
@@ -79,15 +102,52 @@ public class Bluetooth
 				// Discovery has found a device. Get the BluetoothDevice
 				// object and its info from the Intent.
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				discoveredDevices.add(device);
 				//String deviceName = device.getName();
 				//String deviceHardwareAddress = device.getAddress(); // MAC address
 				if(listener !=null) listener.onDiscover(device);
+			}else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)){
+				final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,BluetoothAdapter.ERROR);
+				switch(state){
+					case BluetoothAdapter.STATE_ON:
+						if(state_listener != null) state_listener.onTurnON();
+						break;
+					case BluetoothAdapter.STATE_OFF:
+						if(state_listener != null) state_listener.onTurnOFF();
+						break;
+					case BluetoothAdapter.STATE_TURNING_ON:
+						if(state_listener != null) state_listener.onTurningON();
+						break;
+					case BluetoothAdapter.STATE_TURNING_OFF:
+						if(state_listener != null) state_listener.onTurningOFF();
+						break;
+				}
 			}
 		}
 	};
 	public void setOnDeviceDiscoverListener(OnDeviceDiscoveredListener l){listener=l;}
 	public interface OnDeviceDiscoveredListener{
 		void onDiscover(BluetoothDevice device);
+		void onStart();
+	}
+	public void setOnStateChangedListener(OnStateChangedListener l){state_listener=l;}
+	public interface OnStateChangedListener{
+		void onTurnON();
+		void onTurnOFF();
+		void onTurningON();
+		void onTurningOFF();
+	}
+	public void connect(BluetoothDevice device){
+		try{
+			socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_String));
+			ba.cancelDiscovery();
+			socket.connect();
+			IS_CONNECTED = true;
+			CONNECTED_DEVICE = device.getAddress();
+		}catch(IOException e){
+			e.printStackTrace();
+			Toast.makeText(activity,"Unable to connect "+e.toString(),2000).show();
+		}
 	}
 	
 	public void pairDevice(BluetoothDevice device) {

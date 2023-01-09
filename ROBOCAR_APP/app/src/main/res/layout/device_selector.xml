@@ -6,12 +6,25 @@
 	android:orientation="vertical"
 	android:layout_margin="10dp">
 
-	<android.support.v7.widget.RecyclerView 
-		android:nestedScrollingEnabled="false" 
-		android:id="@+id/device_selectorRecyclerView"
-		android:layout_width="match_parent" 
-		android:overScrollMode="never" 
-		android:layout_height="250dp"/>
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="250dp"
+		android:gravity="center">
+
+		<android.support.v7.widget.RecyclerView
+			android:nestedScrollingEnabled="false"
+			android:id="@+id/device_selectorRecyclerView"
+			android:layout_width="match_parent"
+			android:overScrollMode="never"
+			android:layout_height="230dp"/>
+
+		<ProgressBar
+			android:id="@+id/device_selectorProgressBar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"/>
+
+	</RelativeLayout>
 
 	<LinearLayout
 		android:orientation="horizontal"
@@ -20,16 +33,11 @@
 		android:gravity="right|center_vertical">
 
 		<Button
-			android:id="@+id/device_selectorClose"
+			android:id="@+id/device_selectorFind"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Close"/>
-
-		<Button
-			android:id="@+id/device_selectorConnect"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="Connect"/>
+			android:text="Find Devices"
+			style="?android:attr/buttonBarButtonStyle"/>
 
 	</LinearLayout>
 

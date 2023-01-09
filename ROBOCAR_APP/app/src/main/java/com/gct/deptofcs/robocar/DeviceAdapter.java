@@ -27,8 +27,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 	public DeviceAdapter.ViewHolder onCreateViewHolder(ViewGroup p1, int p2)
 	{
 		// TODO: Implement this method
-		View v = p1.inflate(activity,R.layout.device_item_view,p1);
-		return new ViewHolder(v);
+		return new ViewHolder( LayoutInflater.from(activity).inflate(R.layout.device_item_view,p1,false));
 	}
 
 	@Override
