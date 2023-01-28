@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private AppCompatActivity activity;
 	private TextView textStatus;
 	private ImageView textImg;
-	private VoiceControl vControler;
+	public static VoiceControl vControler;
 	private int state = 1;
 	
 	public static final int BLUETOOTH_OFF = 1;
@@ -49,7 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		status = findViewById(R.id.linear_status);
 		textStatus = findViewById(R.id.text_status);
 		textImg = findViewById(R.id.text_statusImg);
+		mode = findViewById(R.id.mainRadioGroup);
 		vControler = new VoiceControl(this,bluetooth);
+		
+		mode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+			public void onCheckedChanged(RadioGroup p1,int id){
+				itemSelection(id);
+			}
+		});
 		//selector = findViewById(R.id.spinner_selector);
 		if(!bluetooth.getAdapter().isEnabled()){
 			textStatus.setText("Turn on bluetooth");
@@ -142,16 +149,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		switch(id){
 			case R.id.btn_forward:
-				
+				bluetooth.send("F");
+				Toast.makeText(this,"tttt",2000).show();
 				break;
 			case R.id.btn_backward:
-				
+				bluetooth.send("B");
 				break;
 			case R.id.btn_right:
-				
+				bluetooth.send("R");
 				break;
 			case R.id.btn_left:
-				
+				bluetooth.send("L");
 				break;
 			case R.id.btn_voice:
 				if(voicePerm()){
@@ -159,7 +167,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				}
 				break;
 			case R.id.btn_brake:
-				
+				bluetooth.send("S");
+				break;
+			case R.id.radio_control:
+				bluetooth.send("C");
+				break;
+			case R.id.radio_obstacle:
+				bluetooth.send("O");
 				break;
 		}
 	}
@@ -182,4 +196,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		itemSelection(p1.getId());
 	}
 	
+	public static void toast(final Activity a,final String t){
+		a.runOnUiThread(new Runnable(){
+			@Override public void run(){
+				Toast.makeText(a,t,2000).show();
+			}
+		});
+	}
 }

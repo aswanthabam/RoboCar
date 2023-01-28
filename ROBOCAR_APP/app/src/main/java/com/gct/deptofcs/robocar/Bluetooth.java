@@ -47,8 +47,10 @@ public class Bluetooth
 		try{
 			socket.getOutputStream().write(data.getBytes());
 			return true;
-		}catch(IOException e){
+		}catch(Exception e){
 			e.printStackTrace();
+			// MainActivity.vControler.speak("Oops! an error occured",true);
+			Toast.makeText(activity,"Oops! an error occured",2000).show();
 			return false;
 		}
 	}
@@ -137,17 +139,23 @@ public class Bluetooth
 		void onTurningON();
 		void onTurningOFF();
 	}
-	public void connect(BluetoothDevice device){
-		try{
-			socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_String));
-			ba.cancelDiscovery();
-			socket.connect();
-			IS_CONNECTED = true;
-			CONNECTED_DEVICE = device.getAddress();
-		}catch(IOException e){
-			e.printStackTrace();
-			Toast.makeText(activity,"Unable to connect "+e.toString(),2000).show();
-		}
+	public void connect(final BluetoothDevice device){
+		Toast.makeText(activity,"Connecting ....",2000).show();
+		new Thread(){
+			public void run(){
+				try{
+					socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(UUID_String));
+					ba.cancelDiscovery();
+					socket.connect();
+					IS_CONNECTED = true;
+					CONNECTED_DEVICE = device.getAddress();
+					MainActivity.toast(activity,"Connected to "+device.getName());
+				}catch(IOException e){
+					e.printStackTrace();
+					MainActivity.toast(activity,"Unable to connect ");
+				}
+			}	
+		}.start();
 	}
 	
 	public void pairDevice(BluetoothDevice device) {
