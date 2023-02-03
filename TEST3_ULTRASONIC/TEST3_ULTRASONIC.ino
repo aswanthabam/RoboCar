@@ -1,16 +1,25 @@
 #include<SoftwareSerial.h>
 
-/* Create object named bt of the class SoftwareSerial */ 
-SoftwareSerial bt(2,3); /* (Rx,Tx) */  
-
 /* MOTOR PINS */
+
 #define M1_1 7    // IN 1
-#define M1_2 6    // IN 2
+#define M1_2 8    // IN 2
 #define M2_1 5    // IN 3 
 #define M2_2 4    // IN 4
-#define M_SPEED 9 // EN 
+#define M_SPEED 6 // EN 
 
+/* BLUETOOTH */
+
+/* Create object named bt of the class SoftwareSerial */ 
+SoftwareSerial bt(2,3); /* (Rx,Tx) */  
 char mode = 'C'; // Default in control mode
+
+/* ULTRASONIC */
+
+const int trigPin = 9;
+const int echoPin = 10;
+
+float duration, distance;
 
 void setup() {
   // SET ALL PIN OF MOTOR DRIVERS TO OUTPUT
@@ -20,10 +29,16 @@ void setup() {
   pinMode(M2_2,OUTPUT);
   pinMode(M_SPEED,OUTPUT);
   bt.begin(9600); /* Define baud rate for software serial communication */
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
   Serial.begin(9600); /* Define baud rate for serial communication */
 }
 
 void loop() {
+  ultrasonic();
+  if(distance <= 15) {
+    processVal('S'); // Stop motor
+  }
   if (bt.available()) /* If data is available on serial port */
   {
     char ch = bt.read();
@@ -69,7 +84,17 @@ void processVal(char value){
     }
   }
 }
+float ultrasonic() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
 
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration*.0343)/2;
+  return distance;
+}
 void forward(){
   // MOVE FORWARD, BOTH MOTORS CLOCKWOSE
   start(); // SET SPEED
