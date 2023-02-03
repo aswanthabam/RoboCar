@@ -1,8 +1,8 @@
 #define M1_1 7    // IN 1
-#define M1_2 6    // IN 2
+#define M1_2 8    // IN 2
 #define M2_1 5    // IN 3 
 #define M2_2 4    // IN 4
-#define M_SPEED 9 // EN 
+#define M_SPEED 6 // EN 
 
 void setup() {
   // SET ALL PIN OF MOTOR DRIVERS TO OUTPUT
@@ -17,12 +17,6 @@ void loop() {
   forward();
   delay(3000);
   backward();
-  delay(3000);
-  left();
-  forward();
-  delay(3000);
-  right();
-  forward();
   delay(3000);
 }
 
